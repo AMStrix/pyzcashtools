@@ -1,5 +1,7 @@
 # PyZcashtools, Python library for Zcash signatures and transactions
 
+## This repository is not functional and in development
+
 A python library to interacting with Zcash based on Vitalik Buterin's Pybitcointools.
 
 ### Advantages:
