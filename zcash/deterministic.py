@@ -1,4 +1,4 @@
-from bitcoin.main import *
+from zcash.main import *
 import hmac
 import hashlib
 from binascii import hexlify

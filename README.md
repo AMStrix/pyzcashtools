@@ -1,4 +1,6 @@
-# Pybitcointools, Python library for Bitcoin signatures and transactions
+# PyZcashtools, Python library for Zcash signatures and transactions
+
+A python library to interacting with Zcash based on Vitalik Buterin's Pybitcointools.
 
 ### Advantages:
 
@@ -6,10 +8,9 @@
 * No classes
 * Many functions can be taken out and used individually
 * Supports binary, hex and base58
-* Transaction deserialization format almost compatible with BitcoinJS
 * Electrum and BIP0032 support
 * Make and publish a transaction all in a single command line instruction
-* Includes non-bitcoin-specific conversion and JSON utilities
+* Includes non-zcash-specific conversion and JSON utilities
 
 ### Disadvantages:
 
@@ -18,7 +19,7 @@
 
 ### Example usage (best way to learn :) ):
 
-    > from bitcoin import *
+    > from zcash import *
     > priv = sha256('some big long brainwallet password')
     > priv
     '57c617d9b4e1f7af6ec97ca2ff57e94a28279a7eedd4d12a99fa11170e94f5a4'

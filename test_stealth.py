@@ -1,4 +1,4 @@
-import bitcoin as bc
+import zcash as zec
 import sys
 import unittest
 
@@ -24,69 +24,69 @@ class TestStealth(unittest.TestCase):
         
     def test_address_encoding(self):
 
-        sc_pub, sp_pub = bc.basic_stealth_address_to_pubkeys(self.addr)
+        sc_pub, sp_pub = zec.basic_stealth_address_to_pubkeys(self.addr)
         self.assertEqual(sc_pub, self.scan_pub)
         self.assertEqual(sp_pub, self.spend_pub)
         
-        stealth_addr2 = bc.pubkeys_to_basic_stealth_address(sc_pub, sp_pub)
+        stealth_addr2 = zec.pubkeys_to_basic_stealth_address(sc_pub, sp_pub)
         self.assertEqual(stealth_addr2, self.addr)
         
         magic_byte_testnet = 43
-        sc_pub, sp_pub = bc.basic_stealth_address_to_pubkeys(self.testnet_addr)
+        sc_pub, sp_pub = zec.basic_stealth_address_to_pubkeys(self.testnet_addr)
         self.assertEqual(sc_pub, self.scan_pub)
         self.assertEqual(sp_pub, self.spend_pub)
         
-        stealth_addr2 = bc.pubkeys_to_basic_stealth_address(sc_pub, sp_pub, magic_byte_testnet)
+        stealth_addr2 = zec.pubkeys_to_basic_stealth_address(sc_pub, sp_pub, magic_byte_testnet)
         self.assertEqual(stealth_addr2, self.testnet_addr)
         
     def test_shared_secret(self):
 
-        sh_sec = bc.shared_secret_sender(self.scan_pub, self.ephem_priv)
+        sh_sec = zec.shared_secret_sender(self.scan_pub, self.ephem_priv)
         self.assertEqual(sh_sec, self.shared_secret)
 
-        sh_sec2 = bc.shared_secret_receiver(self.ephem_pub, self.scan_priv)
+        sh_sec2 = zec.shared_secret_receiver(self.ephem_pub, self.scan_priv)
         self.assertEqual(sh_sec2, self.shared_secret)
 
     def test_uncover_pay_keys(self):
 
-        pub = bc.uncover_pay_pubkey_sender(self.scan_pub, self.spend_pub, self.ephem_priv)
-        pub2 = bc.uncover_pay_pubkey_receiver(self.scan_priv, self.spend_pub, self.ephem_pub)
+        pub = zec.uncover_pay_pubkey_sender(self.scan_pub, self.spend_pub, self.ephem_priv)
+        pub2 = zec.uncover_pay_pubkey_receiver(self.scan_priv, self.spend_pub, self.ephem_pub)
         self.assertEqual(pub, self.pay_pub)
         self.assertEqual(pub2, self.pay_pub)
 
-        priv = bc.uncover_pay_privkey(self.scan_priv, self.spend_priv, self.ephem_pub)
+        priv = zec.uncover_pay_privkey(self.scan_priv, self.spend_priv, self.ephem_pub)
         self.assertEqual(priv, self.pay_priv)
 
     def test_stealth_metadata_script(self):
 
         nonce = int('deadbeef', 16)
-        script = bc.mk_stealth_metadata_script(self.ephem_pub, nonce)
+        script = zec.mk_stealth_metadata_script(self.ephem_pub, nonce)
         self.assertEqual(script[6:], 'deadbeef' + self.ephem_pub)
         
-        eph_pub = bc.ephem_pubkey_from_tx_script(script)
+        eph_pub = zec.ephem_pubkey_from_tx_script(script)
         self.assertEqual(eph_pub, self.ephem_pub)
 
     def test_stealth_tx_outputs(self):
 
         nonce = int('deadbeef', 16)
         value = 10**8
-        outputs = bc.mk_stealth_tx_outputs(self.addr, value, self.ephem_priv, nonce)
+        outputs = zec.mk_stealth_tx_outputs(self.addr, value, self.ephem_priv, nonce)
 
         self.assertEqual(outputs[0]['value'], 0)
         self.assertEqual(outputs[0]['script'], '6a2606deadbeef' + self.ephem_pub)
-        self.assertEqual(outputs[1]['address'], bc.pubkey_to_address(self.pay_pub))
+        self.assertEqual(outputs[1]['address'], zec.pubkey_to_address(self.pay_pub))
         self.assertEqual(outputs[1]['value'], value)
         
-        outputs = bc.mk_stealth_tx_outputs(self.testnet_addr, value, self.ephem_priv, nonce, 'testnet')
+        outputs = zec.mk_stealth_tx_outputs(self.testnet_addr, value, self.ephem_priv, nonce, 'testnet')
         
         self.assertEqual(outputs[0]['value'], 0)
         self.assertEqual(outputs[0]['script'], '6a2606deadbeef' + self.ephem_pub)
-        self.assertEqual(outputs[1]['address'], bc.pubkey_to_address(self.pay_pub, 111))
+        self.assertEqual(outputs[1]['address'], zec.pubkey_to_address(self.pay_pub, 111))
         self.assertEqual(outputs[1]['value'], value)
 
-        self.assertRaises(Exception, bc.mk_stealth_tx_outputs, self.testnet_addr, value, self.ephem_priv, nonce, 'btc')
+        self.assertRaises(Exception, zec.mk_stealth_tx_outputs, self.testnet_addr, value, self.ephem_priv, nonce, 'btc')
         
-        self.assertRaises(Exception, bc.mk_stealth_tx_outputs, self.addr, value, self.ephem_priv, nonce, 'testnet')
+        self.assertRaises(Exception, zec.mk_stealth_tx_outputs, self.addr, value, self.ephem_priv, nonce, 'testnet')
  
 if __name__ == '__main__':
     unittest.main()

@@ -5,13 +5,13 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='bitcoin',
-      version='1.1.42',
-      description='Python Bitcoin Tools',
-      author='Vitalik Buterin',
+      version='0.1.0',
+      description='Python Zcash Tools',
+      author='Brad Miller',
       author_email='vbuterin@gmail.com',
-      url='http://github.com/vbuterin/pybitcointools',
-      packages=['bitcoin'],
-      scripts=['pybtctool'],
+      url='http://github.com/braddmiller/pyzcashtools',
+      packages=['zcash'],
+      scripts=['pyzectool'],
       include_package_data=True,
-      data_files=[("", ["LICENSE"]), ("bitcoin", ["bitcoin/english.txt"])],
+      data_files=[("", ["LICENSE"]), ("zcash", ["zcash/english.txt"])],
       )
